@@ -335,9 +335,19 @@ def _run_environment(
                 run_spack("config", "blame", overrides=module_overrides)
         print(f"Wrote configuration receipt: {receipt}")
 
+    def write_concretization() -> None:
+        # `spack concretize` prints little, so record the concretized specs with
+        # `spack spec`, which reuses the environment's lock after concretization.
+        output = install_root / "concretization.txt"
+        with output.open("w", encoding="utf-8") as handle:
+            with contextlib.redirect_stdout(handle):
+                run_spack("spec", "--long", "--install-status")
+        print(f"Wrote concretization: {output}")
+
     write_config_receipt()
     print("Concretizing environment...")
     run_spack("concretize")
+    write_concretization()
     if confirm and not confirm_continue():
         raise UserAbort("installation cancelled")
     print("Installing packages...")
