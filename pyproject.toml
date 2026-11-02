@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nwstackify"
+version = "0.1.1"
+description = "Install Spack environments described by a local spack.yaml"
+requires-python = ">=3.9"
+dependencies = []
+
+[project.scripts]
+nwstackify = "nwstackify.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
